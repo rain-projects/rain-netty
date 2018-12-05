@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package com.rain.netty.protobuf;
+
+option java_package = "com.rain.netty.protobuftest";
+option java_outer_classname = "ProtoDataInfo";
+
+message User{
+
+    required string name = 1;
+    optional int32 age = 2;
+    optional string address = 3;
+
+}

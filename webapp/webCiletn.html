@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket client</title>
+
+    <script type="text/javascript">
+
+        var socket;
+
+        if (window.WebSocket) {
+
+            socket = new WebSocket("ws://127.0.0.1:8989/ws");
+            socket.onmessage = function (message) {
+
+                var text = document.getElementById('response_text');
+                text.value = text.value + "\n" + message.data;
+                if (message.data.indexOf("我说") != 0) {
+                    PlaySound('recive_msg');
+                }
+            }
+
+            socket.onopen = function (ev) {
+
+                var text = document.getElementById('response_text');
+                text.value = "链接建立!";
+
+            }
+
+            socket.onclose = function (ev) {
+
+                var text = document.getElementById('response_text');
+                text.value = text.value + "\n" + "链接关闭!";
+
+            }
+
+        }else{
+            alert("当前浏览器不支持WebSocket");
+        }
+
+        function sendMsg(messages) {
+
+            if (!window.WebSocket) {
+                return;
+            }
+
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(messages);
+            } else {
+                alert("链接尚未建立!");
+            }
+
+            document.getElementById('send_text').value = '';
+        }
+
+        document.onkeydown = function (event) {
+
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 27) { // 按 Esc
+                document.getElementById('send_text').value = ''
+            }
+            if (e && e.keyCode == 13) { // enter 键
+                sendMsg(document.getElementById('send_text').value);
+                PlaySound('send_msg');
+            }
+
+        };
+        document.onkeyup = function (event) {
+
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) { // enter 键
+                document.getElementById('send_text').value = '';
+            }
+        };
+
+        function PlaySound(msgType) {
+            var player;
+            if (msgType == 'send_msg') {
+                player = "<embed src='audo/7820.wav' autostart='false' width='0' height='0'/>";
+            }else{
+                player = "<embed src='audo/8407.wav' autostart='false' width='0' height='0'/>";
+            }
+            document.getElementById(msgType).innerHTML=player;
+        }
+
+    </script>
+</head>
+<body>
+<table align="center">
+<form id="socket_form">
+
+    <!--<embed src="audo/8407.wav" autostart="false" width="0" height="0" id="recive_msg"
+           enablejavascript="true">
+
+    <embed src="audo/7820.wav" autostart="false" width="0" height="0" id="send_msg"
+           enablejavascript="true">-->
+    <tr>
+        <td><h1>专用聊天器</h1></td>
+    </tr>
+
+    <tr>
+        <td>
+            <h3>聊天记录:</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea id="response_text" style="width:400px;height: 300px;"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="清空连天记录" onclick="javascript:document.getElementById('response_text').value = ''" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+             <textarea type="text" id="send_text" name="message" style="width:400px;height: 30px;"
+                       onfocus="if(value=='请输入消息,按enter发送!'){value=''}"
+                       onblur="if(value ==''){value='请输入消息,按enter发送!'}">请输入消息,按enter发送!</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="recive_msg"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="send_msg"></div>
+        </td>
+    </tr>
+</form>
+</table>
+</body>
+</html>

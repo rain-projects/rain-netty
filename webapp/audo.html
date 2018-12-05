@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>JS播放声音 兼容所有浏览器</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+
+    <style>
+        #play{ width:200px; height:30px; text-align:center; line-height:30px; background-color:#CCCCCC; float:left;}
+    </style>
+
+</head>
+<body>
+<script>
+    function playmp3(){
+        var player="<embed src='audo/8407.wav' width=200 height=30 />";
+        document.getElementById("play").innerHTML=player;
+    }
+</script>
+<div id="play" onmouseover="this.style.cursor='pointer';" onclick="playmp3();">点击播放</div>
+</body>
+</html>

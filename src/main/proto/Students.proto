@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package com.rain.netty.grpc;
+
+option java_package = "com.rain.netty.grpc";
+option java_outer_classname = "Students";
+option java_multiple_files = true;
+
+message MyRequest{
+    string username = 1;
+}
+
+message MyResponse{
+    string realname = 1;
+}
+
+message StudentsAge{
+    int32 age = 1;
+}
+
+message StreamRequest{
+    string request_info = 1;
+}
+
+message StreamResponse{
+    string response_info = 1;
+}
+
+service StudentsService{
+    //请求相应单个对象
+    rpc GetRealNameByUsername(MyRequest) returns (MyResponse){}
+    //请求单个对象，响应流
+    rpc GetStudentsByAge(StudentsAge) returns (stream MyResponse){}
+    //请求流，响应单个对象
+    rpc GetStudentsAge(stream MyRequest) returns (StudentsAge){}
+    //请求流，响应流
+    rpc BiStream(stream StreamRequest) returns(stream StreamResponse){}
+}

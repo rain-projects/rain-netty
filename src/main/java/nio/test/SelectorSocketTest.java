@@ -18,15 +18,15 @@ public class SelectorSocketTest {
         int[] ports = {9001, 9002, 9003, 9004, 9005};
 
         Selector selector = Selector.open();
-        for (int i = 0; i < ports.length; i++) {
+        for (int port : ports) {
             ServerSocketChannel channel = ServerSocketChannel.open();
             channel.configureBlocking(false);
             ServerSocket socket = channel.socket();
-            InetSocketAddress inetSocketAddress = new InetSocketAddress(ports[i]);
+            InetSocketAddress inetSocketAddress = new InetSocketAddress(port);
             socket.bind(inetSocketAddress);
 
             channel.register(selector, SelectionKey.OP_ACCEPT);
-            System.out.println("服务器监听端口:" + ports[i]);
+            System.out.println("服务器监听端口:" + port);
         }
 
         while (true) {
